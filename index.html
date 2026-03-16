@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bluepaper — Nam Jihyeon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal-light:  #a8dede;
+      --teal-mid:    #6bbece;
+      --teal-dark:   #4a9eae;
+      --teal-deeper: #3a8898;
+      --bg-grad: linear-gradient(135deg, #b8e4e4 0%, #7ecece 30%, #5ab8c4 60%, #4aa8b8 100%);
+      --white:       #f4fafa;
+      --white-dim:   rgba(244,250,250,0.7);
+      --white-faint: rgba(244,250,250,0.4);
+      --border:      rgba(244,250,250,0.2);
+      --border-solid:#d0ecec;
+      --card-bg:     rgba(255,255,255,0.12);
+      --card-hover:  rgba(255,255,255,0.2);
+      --text-dark:   #1a3a3a;
+      --font-hv: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-sans: 'Pretendard', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-grad);
+      background-attachment: fixed;
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-weight: 400;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 60px; padding: 0 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(90,184,196,0.15); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-hv); font-size: 0.88rem;
+      font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--white); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--white-dim); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    /* HERO */
+    .hero { max-width: 1080px; margin: 0 auto; padding: 148px 60px 100px; }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; }
+    .hero-left {}
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 0.58rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--white-dim); margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: var(--font-hv);
+      font-size: clamp(4rem, 8vw, 7.5rem);
+      font-weight: 300; line-height: 0.9;
+      letter-spacing: -0.02em; color: var(--white);
+    }
+    .hero-right { padding-bottom: 8px; }
+    .hero-tagline {
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--white-dim); margin-bottom: 16px;
+    }
+    .hero-desc {
+      font-size: 1.05rem; line-height: 1.9;
+      color: var(--white); font-weight: 400;
+    }
+    .hero-desc-sub {
+      margin-top: 8px;
+      font-size: 0.92rem; line-height: 1.8;
+      color: var(--white-dim); font-weight: 400;
+    }
+    .hero-divider { width: 100%; height: 1px; background: var(--border); margin: 56px 0 0; }
+
+    /* SECTION */
+    .section-wrap { max-width: 1080px; margin: 0 auto; padding: 72px 60px 80px; }
+    .section-sep { max-width: 1080px; margin: 0 auto; padding: 0 60px; }
+    .section-sep hr { border: none; border-top: 1px solid var(--border); }
+
+    .sec-head { display: flex; align-items: center; margin-bottom: 14px; }
+    .sec-brand {
+      font-family: var(--font-hv); font-size: 1.3rem;
+      font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--white);
+    }
+    .sec-brand-sub {
+      font-family: var(--font-mono); font-size: 0.56rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--white-dim); margin-bottom: 28px;
+    }
+    .sec-line { flex: 1; height: 1px; background: var(--border); margin: 0 20px; }
+    .sec-count { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--white-dim); }
+
+    /* FILTER */
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: var(--font-mono); font-size: 0.58rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 7px 18px; border: 1px solid var(--border);
+      background: transparent; color: var(--white-dim);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--white); color: var(--white); }
+    .filter-btn.active { border-color: var(--white); color: var(--text-dark); background: var(--white); }
+
+    /* EDITORIAL GRID */
+    .editorial-group { display: grid; grid-template-columns: 1.55fr 1fr; gap: 3px; margin-bottom: 3px; }
+    .editorial-group .work-card:first-child { grid-row: 1 / 3; }
+    .works-grid-small { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+
+    /* CARD */
+    .work-card {
+      background: var(--card-bg); cursor: pointer;
+      opacity: 0; animation: fadeUp 0.48s forwards;
+      transition: background 0.25s; position: relative; overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+    .work-card:hover { background: var(--card-hover); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .card-thumb { position: relative; overflow: hidden; background: rgba(255,255,255,0.08); }
+    .work-card.card-big .card-thumb { aspect-ratio: 16/10; }
+    .work-card.card-small .card-thumb { aspect-ratio: 4/3; }
+    .work-card.card-reg .card-thumb { aspect-ratio: 16/9; }
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .work-card:hover .card-thumb img { transform: scale(1.04); }
+    .card-overlay { position: absolute; inset: 0; background: rgba(74,158,174,0.2); opacity: 0; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; }
+    .work-card:hover .card-overlay { opacity: 1; }
+    .play-ring { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
+    .card-placeholder { width: 100%; height: 100%; min-height: 160px; display: flex; align-items: center; justify-content: center; font-family: var(--font-hv); font-size: 0.8rem; font-weight: 300; color: var(--white-faint); letter-spacing: 0.16em; text-transform: uppercase; }
+    .card-body { padding: 18px 22px 22px; }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .card-cat {
+      font-family: var(--font-mono); font-size: 0.52rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-dark); background: rgba(244,250,250,0.85);
+      padding: 3px 9px;
+    }
+    .card-year { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.1em; color: var(--white-dim); }
+    .card-title { font-family: var(--font-hv); font-size: 0.95rem; font-weight: 300; color: var(--white); line-height: 1.45; margin-bottom: 8px; }
+    .card-desc-preview { font-size: 0.82rem; line-height: 1.75; color: var(--white-dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-small .card-desc-preview { display: none; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .card-view { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white-dim); transition: transform 0.2s, color 0.2s; }
+    .work-card:hover .card-view { transform: translateX(4px); color: var(--white); }
+    .card-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--white-faint); border: 1px solid var(--white-dim); }
+
+    /* SHORTS */
+    .shorts-section { }
+    .shorts-inner { max-width: 1080px; margin: 0 auto; padding: 72px 60px 80px; }
+    .shorts-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 36px; }
+    .short-card { cursor: pointer; opacity: 0; animation: fadeUp 0.4s forwards; }
+    .short-thumb { aspect-ratio: 9/16; overflow: hidden; background: rgba(255,255,255,0.08); position: relative; }
+    .short-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .short-card:hover .short-thumb img { transform: scale(1.06); }
+    .short-overlay { position: absolute; inset: 0; background: rgba(58,136,152,0.4); opacity: 0; transition: opacity 0.25s; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; }
+    .short-card:hover .short-overlay { opacity: 1; }
+    .short-label { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); }
+    .short-body { padding: 10px 4px 4px; }
+    .short-title { font-family: var(--font-hv); font-size: 0.7rem; font-weight: 300; color: var(--white); line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .short-card.coming { cursor: default; }
+    .short-card.coming .short-thumb { border: 1px dashed var(--border); background: transparent; }
+    .short-coming-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; }
+    .short-coming-plus { font-size: 1.2rem; color: var(--white-faint); }
+    .short-coming-text { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-faint); }
+
+    /* CONTACT */
+    .contact-section { max-width: 1080px; margin: 0 auto; padding: 80px 60px 100px; }
+    .contact-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+    .contact-title {
+      font-family: var(--font-hv);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 300; letter-spacing: -0.01em;
+      color: var(--white); line-height: 1; margin-bottom: 10px;
+    }
+    .contact-sub { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-dim); }
+    .contact-right { display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
+    .contact-item { display: flex; align-items: center; gap: 16px; }
+    .contact-label { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); }
+    .contact-value { font-family: var(--font-hv); font-size: 0.85rem; font-weight: 300; letter-spacing: 0.04em; color: var(--white); }
+    .contact-value a { color: var(--white); text-decoration: none; transition: opacity 0.2s; }
+    .contact-value a:hover { opacity: 0.7; }
+
+    /* MODAL */
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(30,80,90,0.7); z-index: 200; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(12px); }
+    .modal-backdrop.open { display: flex; animation: mfade 0.2s; }
+    @keyframes mfade { from { opacity: 0; } to { opacity: 1; } }
+    .modal-box {
+      background: rgba(90,184,196,0.25); backdrop-filter: blur(24px);
+      border: 1px solid rgba(244,250,250,0.25);
+      max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;
+      position: relative; animation: mslide 0.26s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    @keyframes mslide { from { transform: translateY(18px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-close { position: absolute; top: 14px; right: 14px; z-index: 10; width: 34px; height: 34px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--white); cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .modal-close:hover { background: rgba(255,255,255,0.2); }
+    .modal-media { aspect-ratio: 16/9; background: rgba(255,255,255,0.06); overflow: hidden; position: relative; }
+    .modal-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .modal-media iframe { display: block; width: 100%; height: 100%; border: none; }
+    .modal-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--font-hv); font-size: 0.9rem; font-weight: 300; color: var(--white-faint); text-transform: uppercase; letter-spacing: 0.16em; }
+    .mbig-play { position: absolute; inset: 0; margin: auto; width: 62px; height: 62px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+    .mbig-play:hover { transform: scale(1.08); background: rgba(255,255,255,0.25); }
+    .modal-info { padding: 28px 32px 36px; }
+    .modal-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .modal-tag { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dark); background: rgba(244,250,250,0.85); padding: 4px 10px; }
+    .modal-yr { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.12em; color: var(--white-dim); }
+    .modal-tools { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.08em; color: var(--white-dim); }
+    .modal-title { font-family: var(--font-hv); font-size: 1.5rem; font-weight: 300; line-height: 1.3; margin-bottom: 14px; color: var(--white); }
+    .modal-divider { height: 1px; background: var(--border); margin-bottom: 18px; }
+    .modal-desc { font-size: 0.9rem; line-height: 2; color: var(--white-dim); margin-bottom: 22px; font-weight: 400; }
+    .modal-yt-link { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--white); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: opacity 0.2s; }
+    .modal-yt-link:hover { opacity: 0.7; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      max-width: 1080px; margin: 0 auto;
+      padding: 32px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-family: var(--font-hv); font-size: 0.8rem; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); }
+    .footer-name { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.14em; color: var(--white-dim); margin-top: 4px; }
+    .footer-copy { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.08em; color: var(--white-dim); }
+
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 36px; }
+      .editorial-group { grid-template-columns: 1fr; }
+      .editorial-group .work-card:first-child { grid-row: auto; }
+      .works-grid-small { grid-template-columns: repeat(2, 1fr); }
+      .shorts-grid { grid-template-columns: repeat(3, 1fr); }
+      .contact-inner { flex-direction: column; align-items: flex-start; }
+      .contact-right { align-items: flex-start; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 110px 24px 60px; }
+      .section-wrap, .shorts-inner, .contact-section { padding-left: 24px; padding-right: 24px; }
+      .section-sep { padding: 0 24px; }
+      .works-grid-small { grid-template-columns: 1fr; }
+      .shorts-grid { grid-template-columns: repeat(2, 1fr); }
+      footer { padding: 28px 24px; flex-direction: column; gap: 14px; }
+      .modal-info { padding: 20px 18px 28px; }
+    }
+    /* MOTION REEL */
+    .reel-section { max-width: 1080px; margin: 0 auto; padding: 0 60px 80px; }
+    .reel-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; }
+    .reel-label { font-family: var(--font-hv); font-size: 1.3rem; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); }
+    .reel-sub { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); }
+    .reel-link {
+      display: block; position: relative; width: 100%; aspect-ratio: 16/9;
+      overflow: hidden; background: rgba(255,255,255,0.06);
+      text-decoration: none; cursor: pointer;
+    }
+    .reel-link img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .reel-link:hover img { transform: scale(1.03); }
+    .reel-link::after { content: ''; position: absolute; inset: 0; background: rgba(42,100,120,0.25); transition: opacity 0.3s; opacity: 0; }
+    .reel-link:hover::after { opacity: 1; }
+    .reel-play-btn {
+      position: absolute; inset: 0; margin: auto;
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2; transition: transform 0.2s, background 0.2s;
+    }
+    .reel-link:hover .reel-play-btn { transform: scale(1.08); background: rgba(255,255,255,0.25); }
+    .reel-play-label {
+      position: absolute; bottom: 24px; right: 28px;
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.8); z-index: 2;
+    }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Bluepaper</a>
+  <ul class="nav-links">
+    <li><a href="#stonehenge">STONEHENgE</a></li>
+    <li><a href="#maru">마루기획</a></li>
+    <li><a href="#reel">Motion Reel</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Portfolio</div>
+      <h1 class="hero-title">Bluepaper</h1>
+      <div style="font-family:var(--font-hv);font-size:0.9rem;font-weight:300;letter-spacing:0.28em;text-transform:uppercase;color:var(--white-dim);margin-top:14px;">Jihyeon Nam</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-tagline">Content Creator · Designer</div>
+      <p class="hero-desc">보이는 것 너머,<br>이야기가 흐르는 콘텐츠.</p>
+      <p class="hero-desc-sub">콘텐츠 기획자, 디자이너 남지현</p>
+    </div>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- STONEHENgE -->
+<section class="section-wrap" id="stonehenge">
+  <div class="sec-head">
+    <div>
+      <div class="sec-brand">STONEHENgE</div>
+      <div class="sec-brand-sub">스톤헨지 주얼리 — 모션 그래픽 · 3D 기획</div>
+    </div>
+    <div class="sec-line"></div>
+    <span class="sec-count" id="sh-count">—</span>
+  </div>
+  <div class="filter-bar" id="sh-filter-bar"></div>
+  <div id="sh-works-container"></div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<!-- 마루기획 -->
+<section class="section-wrap" id="maru">
+  <div class="sec-head">
+    <div>
+      <div class="sec-brand">마루기획 ent.</div>
+      <div class="sec-brand-sub">엔터테인먼트 — 영상 기획 · 촬영 · 편집</div>
+    </div>
+    <div class="sec-line"></div>
+    <span class="sec-count" id="maru-count">—</span>
+  </div>
+  <div class="filter-bar" id="maru-filter-bar"></div>
+  <div id="maru-works-container"></div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<!-- MOTION REEL -->
+<section class="reel-section" id="reel">
+  <div class="reel-inner">
+    <div class="reel-head">
+      <div class="reel-label">Motion Reel</div>
+      <div class="reel-sub">2026 Showreel · Motion Graphic</div>
+    </div>
+    <a href="https://youtube.com/shorts/EV9XVECvzQw" target="_blank" rel="noopener" class="reel-video reel-link">
+      <img src="https://img.youtube.com/vi/EV9XVECvzQw/maxresdefault.jpg" alt="Motion Reel 2026">
+      <div class="reel-play-btn">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+      </div>
+      <div class="reel-play-label">YouTube에서 보기</div>
+    </a>
+  </div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="contact-title">Get in Touch</div>
+      <div class="contact-sub">Bluepaper · Nam Jihyeon</div>
+    </div>
+    <div class="contact-right">
+      <div class="contact-item">
+        <span class="contact-label">Tel</span>
+        <span class="contact-value"><a href="tel:01036358539">010-3635-8539</a></span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <span class="contact-value"><a href="/cdn-cgi/l/email-protection#32505e4757425342574003030572555f535b5e1c515d5f"><span class="__cf_email__" data-cfemail="395b554c5c4958495c4b08080e795e54585055175a5654">[email&#160;protected]</span></a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-logo">Bluepaper</div>
+    <div class="footer-name">Nam Jihyeon · 남지현</div>
+  </div>
+  <div class="footer-copy">© 2026 Bluepaper. All rights reserved.</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-media" id="modal-media"></div>
+    <div class="modal-info">
+      <div class="modal-meta">
+        <span class="modal-tag" id="modal-cat"></span>
+        <span class="modal-yr" id="modal-year"></span>
+        <span class="modal-tools" id="modal-tools"></span>
+      </div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-divider"></div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div id="modal-link"></div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ================================================================
+// 📌 STONEHENgE 작업물
+// ================================================================
+const SH_WORKS = [
+  { id:"sh1", title:"스타글로우 모션그래픽", category:"단독제작", year:"2026", description:"기획부터 제작, 업로드까지 단독으로 진행한 스타글로우 모션그래픽 콘텐츠입니다.", tools:"Photoshop · After Effects", youtube:"https://www.youtube.com/shorts/ivV1GJP9Jds", image:"" },
+  { id:"sh2", title:"EVERY MOMENT WITH U 🐈", category:"단독제작", year:"2026", description:"AI 툴을 활용해 기획, 제작, 업로드까지 단독으로 진행한 AI 콘텐츠입니다.", tools:"Midjourney · Gemini · Kling · After Effects", youtube:"https://youtube.com/shorts/Xd8N0vPXy4I", image:"" },
+  { id:"sh3", title:"커넥션 3D", category:"3D 커뮤니케이션", year:"2026", description:"3D 기획 및 외주사 커뮤니케이션을 담당한 콘텐츠입니다.", tools:"3D", youtube:"https://www.youtube.com/shorts/vDwtfPap7mM", image:"" },
+  { id:"sh4", title:"엣지 컬렉션", category:"3D 기획참여", year:"2026", description:"스톤헨지 엣지 컬렉션 3D 콘텐츠 기획에 참여했습니다.", tools:"3D", youtube:"https://www.youtube.com/shorts/w9z0_fizNdo", image:"" },
+  { id:"sh5", title:"쉬 컬렉션", category:"3D 기획참여", year:"2026", description:"스톤헨지 쉬 컬렉션 3D 콘텐츠 기획에 참여했습니다.", tools:"3D", youtube:"https://www.youtube.com/shorts/xmLsGMxGBV4", image:"" },
+  { id:"sh6", title:"WITH U 컬렉션", category:"3D 기획참여", year:"2026", description:"스톤헨지 WITH U 컬렉션 3D 콘텐츠 기획에 참여했습니다.", tools:"3D", youtube:"https://www.youtube.com/shorts/maq9Ms8jvXY", image:"" },
+  { id:"sh7", title:"스타글로우 컬렉션", category:"3D 기획참여", year:"2026", description:"스톤헨지 스타글로우 컬렉션 3D 콘텐츠 기획에 참여했습니다.", tools:"3D", youtube:"https://www.youtube.com/shorts/OPMEO8pmExY", image:"" },
+];
+
+// ================================================================
+// 📌 마루기획 ent. 작업물
+// ================================================================
+const MARU_WORKS = [
+  { id:"m1", title:"박지훈 7th MINI ALBUM [Blank or Black] HIGHLIGHT MEDLEY", category:"Directed", year:"2026", description:"기획, 촬영, 합성, 모션 전 과정을 단독으로 진행한 하이라이트 메들리 영상입니다.", tools:"", youtube:"https://youtu.be/DgjONtJigBk", image:"" },
+  { id:"m2", title:"마루네 떡국가게", category:"Directed", year:"2026", description:"소속사 자체 예능 콘텐츠로, 기획부터 촬영, 편집까지 전 과정을 혼자 진행했습니다.", tools:"", youtube:"https://www.youtube.com/watch?v=euG2YguTqYQ", image:"" },
+  { id:"m3", title:"[COVER] 박지훈 - camping everywhere (죠지)", category:"Directed", year:"2026", description:"커버 영상 기획, 촬영, 합성, 모션 작업을 단독으로 진행했습니다.", tools:"", youtube:"https://youtu.be/8tnX3JOxY64", image:"" },
+  { id:"m4", title:"약한영웅 Class 1 포스터 촬영 비하인드", category:"Behind", year:"2026", description:"드라마 '약한영웅 Class 1' 공식 포스터 촬영 현장 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/1kLXefFXWtA", image:"" },
+  { id:"m5", title:"[CLUE] 콘서트 비하인드", category:"Behind", year:"2026", description:"CLUE 콘서트 준비 과정과 무대 뒤 비하인드를 담은 영상입니다.", tools:"", youtube:"https://youtu.be/AssgR5K8hNk", image:"" },
+  { id:"m6", title:"2022 UNI-KON 비하인드", category:"Behind", year:"2026", description:"2022 UNI-KON 행사 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/tzZRYCNTI4k", image:"" },
+  { id:"m7", title:"더스타 비하인드", category:"Behind", year:"2026", description:"더스타 화보 촬영 현장 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/d7n_MsEQvF8", image:"" },
+  { id:"m8", title:"마리끌레르 비하인드", category:"Behind", year:"2026", description:"마리끌레르 화보 촬영 현장 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/Yma1_PE7p-U", image:"" },
+  { id:"m9", title:"약한영웅 Class 1 마지막 촬영 비하인드", category:"Behind", year:"2026", description:"드라마 '약한영웅 Class 1' 마지막 촬영 현장의 특별한 순간들을 담은 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/oRe2Qg9uMks", image:"" },
+  { id:"m10", title:"얼루어 화보 촬영 비하인드", category:"Behind", year:"2026", description:"얼루어 화보 촬영 현장 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/BJ90JzGMCI4", image:"" },
+  { id:"m11", title:"에스콰이어 촬영 비하인드", category:"Behind", year:"2026", description:"에스콰이어 화보 촬영 현장 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/w2AGXcoZQSo", image:"" },
+  { id:"m12", title:"약한영웅 모음 비하인드", category:"Behind", year:"2026", description:"드라마 '약한영웅' 촬영 현장의 다양한 비하인드 장면들을 모아 담은 영상입니다.", tools:"", youtube:"https://youtu.be/CzeuBXSrpnE", image:"" },
+  { id:"m13", title:"'Blank Effect (무표정)' M/V 비하인드", category:"Behind", year:"2026", description:"박지훈 'Blank Effect (무표정)' 뮤직비디오 촬영 현장 비하인드 영상입니다.", tools:"", youtube:"https://youtu.be/EPS9kYGlJCk", image:"" },
+];
+// ================================================================
+
+function ytId(url) {
+  if (!url) return null;
+  const m = url.match(/(?:v=|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+function thumb(work) {
+  if (work.image) return work.image;
+  const id = ytId(work.youtube || work.link || "");
+  return id ? `https://img.youtube.com/vi/${id}/maxresdefault.jpg` : null;
+}
+
+const shCats = ["All","단독제작","3D 커뮤니케이션","3D 기획참여"];
+let shActive = "All";
+function renderSHFilters() {
+  document.getElementById("sh-filter-bar").innerHTML = shCats.map(c =>
+    `<button class="filter-btn${c===shActive?' active':''}" onclick="setSHFilter('${c}')">${c}</button>`
+  ).join("");
+}
+function setSHFilter(c) { shActive=c; renderSHFilters(); renderSHWorks(); }
+function renderSHWorks() {
+  const list = shActive==="All" ? SH_WORKS : SH_WORKS.filter(w=>w.category===shActive);
+  document.getElementById("sh-count").textContent = list.length+" projects";
+  document.getElementById("sh-works-container").innerHTML = buildGrid(list);
+}
+
+const maruCats = ["All","Directed","Behind"];
+let maruActive = "All";
+function renderMaruFilters() {
+  document.getElementById("maru-filter-bar").innerHTML = maruCats.map(c =>
+    `<button class="filter-btn${c===maruActive?' active':''}" onclick="setMaruFilter('${c}')">${c}</button>`
+  ).join("");
+}
+function setMaruFilter(c) { maruActive=c; renderMaruFilters(); renderMaruWorks(); }
+function renderMaruWorks() {
+  const list = maruActive==="All" ? MARU_WORKS : MARU_WORKS.filter(w=>w.category===maruActive);
+  document.getElementById("maru-count").textContent = list.length+" projects";
+  document.getElementById("maru-works-container").innerHTML = buildGrid(list);
+}
+
+function buildGrid(list) {
+  if (!list.length) return `<p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--white-dim);padding:40px 0;">No projects in this category.</p>`;
+  if (list.length===1) return `<div class="works-grid-small">${cardHTML(list[0],0,'card-reg')}</div>`;
+  let html = `<div class="editorial-group">${cardHTML(list[0],0,'card-big')}`;
+  list.slice(1,3).forEach((w,i)=>{ html+=cardHTML(w,i+1,'card-small'); });
+  html+=`</div>`;
+  if (list.length>3) {
+    html+=`<div class="works-grid-small">`;
+    list.slice(3).forEach((w,i)=>{ html+=cardHTML(w,i+3,'card-reg'); });
+    html+=`</div>`;
+  }
+  return html;
+}
+
+function cardHTML(w,i,sizeClass) {
+  const t = thumb(w);
+  return `
+  <div class="work-card ${sizeClass}" style="animation-delay:${i*0.06}s" onclick="openModal('${w.id}')">
+    <div class="card-thumb">
+      ${t?`<img src="${t}" alt="${w.title}" loading="lazy">`:`<div class="card-placeholder">${w.category}</div>`}
+      <div class="card-overlay"><div class="play-ring"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta"><span class="card-cat">${w.category}</span><span class="card-year">${w.year}</span></div>
+      <div class="card-title">${w.title}</div>
+      <div class="card-desc-preview">${w.description}</div>
+      <div class="card-footer"><span class="card-view">View →</span><span class="card-dot"></span></div>
+    </div>
+  </div>`;
+}
+
+function renderShorts() {
+  let html="";
+  for(let j=0;j<5;j++) {
+    html+=`<div class="short-card coming"><div class="short-thumb"><div class="short-coming-inner"><span class="short-coming-plus">+</span><span class="short-coming-text">Soon</span></div></div><div class="short-body"><div class="short-title" style="color:var(--white-faint);">—</div></div></div>`;
+  }
+  document.getElementById("shorts-grid").innerHTML=html;
+}
+
+const ALL_WORKS=[...SH_WORKS,...MARU_WORKS];
+function openModal(id) {
+  const w=ALL_WORKS.find(x=>x.id===id); if(!w) return;
+  const vid=ytId(w.youtube||""); const t=thumb(w);
+  document.getElementById("modal-cat").textContent=w.category;
+  document.getElementById("modal-year").textContent=w.year;
+  document.getElementById("modal-tools").textContent=w.tools?`— ${w.tools}`:"";
+  document.getElementById("modal-title").textContent=w.title;
+  document.getElementById("modal-desc").textContent=w.description;
+  document.getElementById("modal-link").innerHTML=w.youtube?`<a href="${w.youtube}" target="_blank" rel="noopener" class="modal-yt-link">YouTube에서 보기 →</a>`:"";
+  const media=document.getElementById("modal-media");
+  if(t) {
+    media.innerHTML=`<img src="${t}" alt="${w.title}">${vid?`<button class="mbig-play" onclick="playVid('${vid}')"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></button>`:''}`;
+  } else { media.innerHTML=`<div class="modal-ph">${w.category}</div>`; }
+  document.getElementById("modal").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function playVid(id) {
+  document.getElementById("modal-media").innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+}
+function closeModal() {
+  document.getElementById("modal").classList.remove("open");
+  document.getElementById("modal-media").innerHTML="";
+  document.body.style.overflow="";
+}
+document.getElementById("modal").addEventListener("click",e=>{ if(e.target===do
