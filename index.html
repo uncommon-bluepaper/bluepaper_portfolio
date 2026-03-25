@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bluepaper Studio — Nam Jihyeon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-grad: linear-gradient(135deg, #b8e4e4 0%, #7ecece 30%, #5ab8c4 60%, #4aa8b8 100%);
+      --white: #f4fafa;
+      --white-dim: rgba(244,250,250,0.7);
+      --white-faint: rgba(244,250,250,0.35);
+      --border: rgba(244,250,250,0.22);
+      --card-bg: rgba(255,255,255,0.12);
+      --card-hover: rgba(255,255,255,0.2);
+      --text-dark: #1a3a3a;
+      --font-hv: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-sans: 'Pretendard', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-grad); background-attachment: fixed; color: var(--white); font-family: var(--font-sans); font-weight: 400; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px; padding: 0 60px; display: flex; align-items: center; justify-content: space-between; background: rgba(90,184,196,0.15); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-hv); font-size: 0.88rem; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+
+    .hero { max-width: 1080px; margin: 0 auto; padding: 148px 60px 80px; text-align: center; }
+    .hero-inner { display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .hero-title { font-family: var(--font-hv); font-size: clamp(4.5rem, 9vw, 9rem); font-weight: 300; line-height: 1; letter-spacing: -0.02em; color: var(--white); white-space: nowrap; }
+    .hero-studio { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.6em; text-transform: uppercase; color: var(--white-dim); margin-top: -16px; }
+    .hero-divider-short { width: 1px; height: 48px; background: var(--border); }
+    .hero-tagline { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-dim); }
+    .hero-desc { font-size: 1.15rem; line-height: 1.9; color: var(--white); }
+    .hero-desc-sub { font-size: 0.95rem; line-height: 1.9; color: var(--white-dim); margin-top: -16px; }
+    .hero-divider { width: 100%; height: 1px; background: var(--border); margin-top: 24px; }
+
+    .reel-section { max-width: 1080px; margin: 0 auto; padding: 72px 60px 80px; }
+    .reel-head { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .reel-label { font-family: var(--font-hv); font-size: 1.3rem; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); }
+    .reel-sub { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); }
+    .reel-badge { margin-left: auto; font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dark); background: rgba(244,250,250,0.88); padding: 4px 12px; }
+    .reel-video { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: rgba(255,255,255,0.06); }
+    .reel-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    .section-wrap { max-width: 1080px; margin: 0 auto; padding: 72px 60px 80px; }
+    .section-sep { max-width: 1080px; margin: 0 auto; padding: 0 60px; }
+    .section-sep hr { border: none; border-top: 1px solid var(--border); }
+    .sec-head { display: flex; align-items: center; margin-bottom: 12px; }
+    .sec-brand { font-family: var(--font-hv); font-size: 1.3rem; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); }
+    .sec-brand-sub { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white-dim); margin-bottom: 28px; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); margin: 0 20px; }
+    .sec-count { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--white-dim); }
+
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
+    .filter-btn { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 7px 18px; border: 1px solid var(--border); background: transparent; color: var(--white-dim); cursor: pointer; transition: all 0.2s; }
+    .filter-btn:hover { border-color: var(--white); color: var(--white); }
+    .filter-btn.active { border-color: var(--white); color: var(--text-dark); background: var(--white); }
+
+    .editorial-group { display: grid; grid-template-columns: 1.55fr 1fr; gap: 3px; margin-bottom: 3px; }
+    .editorial-group .work-card:first-child { grid-row: 1 / 3; }
+    .works-grid-small { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+
+    .work-card { background: var(--card-bg); cursor: pointer; opacity: 0; animation: fadeUp 0.48s forwards; transition: background 0.25s; position: relative; overflow: hidden; backdrop-filter: blur(8px); }
+    .work-card:hover { background: var(--card-hover); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .card-thumb { position: relative; overflow: hidden; background: rgba(255,255,255,0.08); }
+    .work-card.card-big .card-thumb { aspect-ratio: 16/10; }
+    .work-card.card-small .card-thumb { aspect-ratio: 4/3; }
+    .work-card.card-reg .card-thumb { aspect-ratio: 16/9; }
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .work-card:hover .card-thumb img { transform: scale(1.04); }
+    .card-overlay { position: absolute; inset: 0; background: rgba(74,158,174,0.2); opacity: 0; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; }
+    .work-card:hover .card-overlay { opacity: 1; }
+    .play-ring { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.85); background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
+    .card-placeholder { width: 100%; height: 100%; min-height: 160px; display: flex; align-items: center; justify-content: center; font-family: var(--font-hv); font-size: 0.8rem; font-weight: 300; color: var(--white-faint); letter-spacing: 0.16em; text-transform: uppercase; }
+    .card-body { padding: 18px 22px 22px; }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .card-cat { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dark); background: rgba(244,250,250,0.85); padding: 3px 9px; }
+    .card-year { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.1em; color: var(--white-dim); }
+    .card-title { font-family: var(--font-hv); font-size: 0.95rem; font-weight: 300; color: var(--white); line-height: 1.45; margin-bottom: 8px; }
+    .card-desc-preview { font-size: 0.82rem; line-height: 1.75; color: var(--white-dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-small .card-desc-preview { display: none; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .card-view { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white-dim); transition: transform 0.2s, color 0.2s; }
+    .work-card:hover .card-view { transform: translateX(4px); color: var(--white); }
+    .card-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--white-faint); border: 1px solid var(--white-dim); }
+
+    .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .ai-card { background: var(--card-bg); cursor: pointer; opacity: 0; animation: fadeUp 0.48s forwards; transition: background 0.25s; overflow: hidden; backdrop-filter: blur(8px); }
+    .ai-card:hover { background: var(--card-hover); }
+    .ai-thumb { position: relative; aspect-ratio: 9/16; overflow: hidden; background: rgba(255,255,255,0.08); }
+    .ai-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .ai-card:hover .ai-thumb img { transform: scale(1.04); }
+    .ai-overlay { position: absolute; inset: 0; background: rgba(74,158,174,0.2); opacity: 0; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; }
+    .ai-card:hover .ai-overlay { opacity: 1; }
+    .ai-body { padding: 16px 20px 20px; }
+    .ai-cat { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dark); background: rgba(244,250,250,0.85); padding: 3px 9px; display: inline-block; margin-bottom: 8px; }
+    .ai-title { font-family: var(--font-hv); font-size: 0.95rem; font-weight: 300; color: var(--white); line-height: 1.45; margin-bottom: 6px; }
+    .ai-tools { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; color: var(--white-dim); }
+
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(30,80,90,0.7); z-index: 200; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(12px); }
+    .modal-backdrop.open { display: flex; animation: mfade 0.2s; }
+    @keyframes mfade { from { opacity: 0; } to { opacity: 1; } }
+    .modal-box { background: rgba(90,184,196,0.25); backdrop-filter: blur(24px); border: 1px solid rgba(244,250,250,0.25); width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; animation: mslide 0.26s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .modal-box.narrow { max-width: 400px; }
+    @keyframes mslide { from { transform: translateY(18px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-close { position: absolute; top: 14px; right: 14px; z-index: 10; width: 34px; height: 34px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--white); cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .modal-close:hover { background: rgba(255,255,255,0.2); }
+    /* 이미지: 원본 비율 그대로 */
+    .modal-media img { width: 100%; height: auto; display: block; }
+    /* 영상: aspect-ratio로 비율 고정 후 iframe absolute */
+    .modal-media.is-video { position: relative; }
+    .modal-media.is-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .modal-play-btn { position: absolute; inset: 0; margin: auto; width: 62px; height: 62px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+    .modal-play-btn:hover { transform: scale(1.08); background: rgba(255,255,255,0.25); }
+    .modal-info { padding: 28px 32px 36px; }
+    .modal-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .modal-tag { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dark); background: rgba(244,250,250,0.85); padding: 4px 10px; }
+    .modal-yr { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.12em; color: var(--white-dim); }
+    .modal-tools { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.08em; color: var(--white-dim); }
+    .modal-title { font-family: var(--font-hv); font-size: 1.5rem; font-weight: 300; line-height: 1.3; margin-bottom: 14px; color: var(--white); }
+    .modal-divider { height: 1px; background: var(--border); margin-bottom: 18px; }
+    .modal-desc { font-size: 0.9rem; line-height: 2; color: var(--white-dim); margin-bottom: 22px; font-weight: 400; }
+    .modal-yt-link { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--white); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: opacity 0.2s; }
+    .modal-yt-link:hover { opacity: 0.7; }
+
+    .contact-section { max-width: 1080px; margin: 0 auto; padding: 80px 60px 100px; }
+    .contact-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+    .contact-title { font-family: var(--font-hv); font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 300; letter-spacing: -0.01em; color: var(--white); line-height: 1; margin-bottom: 10px; }
+    .contact-sub { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-dim); }
+    .contact-right { display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
+    .contact-item { display: flex; align-items: center; gap: 16px; }
+    .contact-label { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); }
+    .contact-value { font-family: var(--font-hv); font-size: 0.85rem; font-weight: 300; letter-spacing: 0.04em; color: var(--white); }
+    .contact-value a { color: var(--white); text-decoration: none; transition: opacity 0.2s; }
+    .contact-value a:hover { opacity: 0.7; }
+
+    .cursor-glow { position: fixed; width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle, rgba(200,245,240,0.95) 0%, rgba(200,245,240,0.35) 45%, rgba(200,245,240,0) 70%); pointer-events: none; transform: translate(-50%, -50%); z-index: 9999; transition: opacity 0.3s; }
+    .particle { position: fixed; border-radius: 50%; background: rgba(200,245,240,0.95); pointer-events: none; z-index: 9998; animation: particle-burst 0.6s ease-out forwards; }
+    @keyframes particle-burst {
+      0% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+      100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity: 0; }
+    }
+
+    footer { border-top: 1px solid var(--border); max-width: 1080px; margin: 0 auto; padding: 32px 60px; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-family: var(--font-hv); font-size: 0.8rem; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); }
+    .footer-name { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.14em; color: var(--white-dim); margin-top: 4px; }
+    .footer-copy { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.08em; color: var(--white-dim); }
+
+    @media (max-width: 860px) {
+      .editorial-group { grid-template-columns: 1fr; }
+      .editorial-group .work-card:first-child { grid-row: auto; }
+      .works-grid-small { grid-template-columns: repeat(2, 1fr); }
+      .ai-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-inner { flex-direction: column; align-items: flex-start; }
+      .contact-right { align-items: flex-start; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 110px 24px 60px; }
+      .section-wrap, .reel-section, .contact-section { padding-left: 24px; padding-right: 24px; }
+      .section-sep { padding: 0 24px; }
+      .works-grid-small { grid-template-columns: 1fr; }
+      .ai-grid { grid-template-columns: 1fr; }
+      footer { padding: 28px 24px; flex-direction: column; gap: 14px; }
+      .modal-info { padding: 20px 18px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursor-glow"></div>
+
+<nav>
+  <a href="#" class="nav-logo">Bluepaper Studio</a>
+  <ul class="nav-links">
+    <li><a href="#reel">Motion Reel</a></li>
+    <li><a href="#stonehenge">STONEHENgE</a></li>
+    <li><a href="#maru">마루기획</a></li>
+    <li><a href="#ai">AI Creative</a></li>
+    <li><a href="#design">Design</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="about">
+  <div class="hero-inner">
+    <h1 class="hero-title">Jihyeon Nam</h1>
+    <div class="hero-studio">Bluepaper Studio</div>
+    <div class="hero-divider-short"></div>
+    <div class="hero-tagline">Content Creator · Marketer</div>
+    <p class="hero-desc">아이디어가 움직이는 순간을 만듭니다.</p>
+    <p class="hero-desc-sub">브랜드의 메시지를 시각적으로 풀어내는 것을 좋아합니다.<br>기획부터 촬영, 영상 편집, 모션 그래픽까지<br>콘텐츠의 처음과 끝을 함께합니다.</p>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<section class="reel-section" id="reel">
+  <div class="reel-head">
+    <div class="reel-label">Motion Reel</div>
+    <div class="reel-sub">2026 Showreel · Motion Graphic</div>
+    <span class="reel-badge">Directed</span>
+  </div>
+  <div class="reel-video">
+    <iframe src="https://player.vimeo.com/video/1173935073?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="남지현_모션그래픽 쇼릴"></iframe>
+  </div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<section class="section-wrap" id="stonehenge">
+  <div class="sec-head">
+    <div>
+      <div class="sec-brand">STONEHENgE</div>
+      <div class="sec-brand-sub">스톤헨지 주얼리 — 모션 그래픽 · 3D 콘텐츠</div>
+    </div>
+    <div class="sec-line"></div>
+    <span class="sec-count" id="sh-count">—</span>
+  </div>
+  <div class="filter-bar" id="sh-filter-bar"></div>
+  <div id="sh-works-container"></div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<section class="section-wrap" id="maru">
+  <div class="sec-head">
+    <div>
+      <div class="sec-brand">마루기획 ent.</div>
+      <div class="sec-brand-sub">엔터테인먼트 — 영상 기획 · 촬영 · 편집</div>
+    </div>
+    <div class="sec-line"></div>
+    <span class="sec-count" id="maru-count">—</span>
+  </div>
+  <div class="filter-bar" id="maru-filter-bar"></div>
+  <div id="maru-works-container"></div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<section class="section-wrap" id="ai">
+  <div class="sec-head">
+    <div>
+      <div class="sec-brand">AI Creative</div>
+      <div class="sec-brand-sub">AI 툴 기반 기획 · 제작 콘텐츠</div>
+    </div>
+    <div class="sec-line"></div>
+    <span class="sec-count" id="ai-count">—</span>
+  </div>
+  <div class="ai-grid" id="ai-works-container"></div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<section class="section-wrap" id="design">
+  <div class="sec-head">
+    <div>
+      <div class="sec-brand">Design</div>
+      <div class="sec-brand-sub">그래픽 디자인 · 일러스트레이션</div>
+    </div>
+    <div class="sec-line"></div>
+    <span class="sec-count" id="design-count">—</span>
+  </div>
+  <div class="filter-bar" id="design-filter-bar"></div>
+  <div id="design-works-container"></div>
+</section>
+
+<div class="section-sep"><hr></div>
+
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="contact-title">Get in Touch</div>
+      <div class="contact-sub">Bluepaper Studio · Nam Jihyeon</div>
+    </div>
+    <div class="contact-right">
+      <div class="contact-item">
+        <span class="contact-label">Tel</span>
+        <span class="contact-value"><a href="tel:01036358539">010-3635-8539</a></span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <span class="contact-value"><a href="mailto:bluepaper117@gmail.com">bluepaper117@gmail.com</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-logo">Bluepaper Studio</div>
+    <div class="footer-name">Nam Jihyeon · 남지현</div>
+  </div>
+  <div class="footer-copy">© 2026 Bluepaper Studio. All rights reserved.</div>
+</footer>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-media"></div>
+    <div class="modal-info">
+      <div class="modal-meta">
+        <span class="modal-tag" id="modal-cat"></span>
+        <span class="modal-yr" id="modal-year"></span>
+        <span class="modal-tools" id="modal-tools"></span>
+      </div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-divider"></div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div id="modal-link"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var SH_WORKS = [
+  {id:"sh1",title:"스타글로우 모션그래픽",category:"Directed",year:"2026",description:"기획부터 제작, 업로드까지 단독으로 진행한 스타글로우 모션그래픽 콘텐츠입니다.",tools:"Photoshop · After Effects",youtube:"https://www.youtube.com/shorts/ivV1GJP9Jds",image:""},
+  {id:"sh3",title:"커넥션 3D",category:"Art Director",year:"2026",description:"3D 기획 및 외주사 커뮤니케이션을 총괄한 콘텐츠입니다. 아트 디렉팅과 3D 아티스트 협업을 담당했습니다.",tools:"3D",youtube:"https://www.youtube.com/shorts/vDwtfPap7mM",image:""},
+  {id:"sh4",title:"엣지 컬렉션",category:"Planning",year:"2026",description:"스톤헨지 엣지 컬렉션 3D 콘텐츠 기획에 참여했습니다.",tools:"3D",youtube:"https://www.youtube.com/shorts/w9z0_fizNdo",image:""},
+  {id:"sh5",title:"쉬 컬렉션",category:"Planning",year:"2026",description:"스톤헨지 쉬 컬렉션 3D 콘텐츠 기획에 참여했습니다.",tools:"3D",youtube:"https://www.youtube.com/shorts/xmLsGMxGBV4",image:""},
+  {id:"sh6",title:"WITH U 컬렉션",category:"Planning",year:"2026",description:"스톤헨지 WITH U 컬렉션 3D 콘텐츠 기획에 참여했습니다.",tools:"3D",youtube:"https://www.youtube.com/shorts/maq9Ms8jvXY",image:""},
+  {id:"sh7",title:"스타글로우 컬렉션",category:"Planning",year:"2026",description:"스톤헨지 스타글로우 컬렉션 3D 콘텐츠 기획에 참여했습니다.",tools:"3D",youtube:"https://www.youtube.com/shorts/OPMEO8pmExY",image:""}
+];
+
+var MARU_WORKS = [
+  {id:"m1",title:"박지훈 7th MINI ALBUM [Blank or Black] HIGHLIGHT MEDLEY",category:"Directed",year:"2026",description:"기획, 촬영, 합성, 모션 전 과정을 단독으로 진행한 하이라이트 메들리 영상입니다.",tools:"",youtube:"https://youtu.be/DgjONtJigBk",image:""},
+  {id:"m2",title:"마루네 떡국가게",category:"Directed",year:"2026",description:"소속사 자체 예능 콘텐츠로, 기획부터 촬영, 편집까지 전 과정을 혼자 진행했습니다.",tools:"",youtube:"https://www.youtube.com/watch?v=euG2YguTqYQ",image:""},
+  {id:"m3",title:"[COVER] 박지훈 - camping everywhere (죠지)",category:"Directed",year:"2026",description:"커버 영상 기획, 촬영, 합성, 모션 작업을 단독으로 진행했습니다.",tools:"",youtube:"https://youtu.be/8tnX3JOxY64",image:""},
+  {id:"m4",title:"약한영웅 Class 1 포스터 촬영 비하인드",category:"Filming & Edit",year:"2026",description:"드라마 '약한영웅 Class 1' 공식 포스터 촬영 현장 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/1kLXefFXWtA",image:""},
+  {id:"m5",title:"[CLUE] 콘서트 비하인드",category:"Filming & Edit",year:"2026",description:"CLUE 콘서트 준비 과정과 무대 뒤 비하인드를 담은 영상입니다.",tools:"",youtube:"https://youtu.be/AssgR5K8hNk",image:""},
+  {id:"m6",title:"2022 UNI-KON 비하인드",category:"Filming & Edit",year:"2026",description:"2022 UNI-KON 행사 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/tzZRYCNTI4k",image:""},
+  {id:"m7",title:"더스타 비하인드",category:"Filming & Edit",year:"2026",description:"더스타 화보 촬영 현장 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/d7n_MsEQvF8",image:""},
+  {id:"m8",title:"마리끌레르 비하인드",category:"Filming & Edit",year:"2026",description:"마리끌레르 화보 촬영 현장 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/Yma1_PE7p-U",image:""},
+  {id:"m9",title:"약한영웅 Class 1 마지막 촬영 비하인드",category:"Filming & Edit",year:"2026",description:"드라마 '약한영웅 Class 1' 마지막 촬영 현장의 특별한 순간들을 담은 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/oRe2Qg9uMks",image:""},
+  {id:"m10",title:"얼루어 화보 촬영 비하인드",category:"Filming & Edit",year:"2026",description:"얼루어 화보 촬영 현장 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/BJ90JzGMCI4",image:""},
+  {id:"m11",title:"에스콰이어 촬영 비하인드",category:"Filming & Edit",year:"2026",description:"에스콰이어 화보 촬영 현장 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/w2AGXcoZQSo",image:""},
+  {id:"m12",title:"약한영웅 모음 비하인드",category:"Filming & Edit",year:"2026",description:"드라마 '약한영웅' 촬영 현장의 다양한 비하인드 장면들을 모아 담은 영상입니다.",tools:"",youtube:"https://youtu.be/CzeuBXSrpnE",image:""},
+  {id:"m13",title:"'Blank Effect (무표정)' M/V 비하인드",category:"Filming & Edit",year:"2026",description:"박지훈 'Blank Effect (무표정)' 뮤직비디오 촬영 현장 비하인드 영상입니다.",tools:"",youtube:"https://youtu.be/EPS9kYGlJCk",image:""}
+];
+
+var AI_WORKS = [
+  {id:"ai1",title:"EVERY MOMENT WITH U 🐈",year:"2026",description:"AI 툴을 활용해 기획, 제작, 업로드까지 단독으로 진행한 AI 모션 콘텐츠입니다.",tools:"Midjourney · Gemini · Kling · After Effects",vimeo:"",youtube:"https://youtube.com/shorts/Xd8N0vPXy4I"},
+  {id:"ai2",title:"흰 눈과 함께 가장 먼저 도착한 크리스마스 선물 🎁",year:"2026",description:"AI 툴을 활용해 기획하고 제작한 홀리데이 콘텐츠입니다.",tools:"Midjourney · Gemini · Kling · After Effects",vimeo:"1174682401",youtube:""}
+];
+
+var DESIGN_WORKS = [
+  {id:"d1",title:"모쿠슈라 홀리데이 일러스트",category:"Directed",year:"2026",description:"파주 대형 프렌치카페 모쿠슈라의 홀리데이 테마 일러스트입니다. 직접 기획하고 포토샵으로 제작하여 슈톨렌 패키지 박스와 컵받침에 실제 적용되었습니다.",tools:"Photoshop",youtube:"",image:"mcsl_1(illustration final).jpg"},
+  {id:"d2",title:"모쿠슈라 홀리데이 컵받침 목업",category:"Directed",year:"2026",description:"홀리데이 일러스트가 컵받침 굿즈에 적용된 목업입니다.",tools:"Photoshop",youtube:"",image:"mcsl_2.png"}
+];
+
+function ytId(url) {
+  if (!url) return null;
+  var m = url.match(/(?:v=|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+function thumb(work) {
+  if (work.image) return work.image;
+  var id = ytId(work.youtube || "");
+  return id ? "https://img.youtube.com/vi/" + id + "/maxresdefault.jpg" : null;
+}
+
+/* ── STONEHENgE ── */
+var shCats = ["All","Directed","Art Director","Planning"];
+var shActive = "All";
+function renderSHFilters() {
+  document.getElementById("sh-filter-bar").innerHTML = shCats.map(function(c) {
+    return '<button class="filter-btn' + (c===shActive?" active":"") + '" onclick="setSHFilter(\'' + c + '\')">' + c + '</button>';
+  }).join("");
+}
+function setSHFilter(c) { shActive=c; renderSHFilters(); renderSHWorks(); }
+function renderSHWorks() {
+  var list = shActive==="All" ? SH_WORKS : SH_WORKS.filter(function(w){return w.category===shActive;});
+  document.getElementById("sh-count").textContent = list.length+" projects";
+  document.getElementById("sh-works-container").innerHTML = buildGrid(list);
+}
+
+/* ── 마루기획 ── */
+var maruCats = ["All","Directed","Filming & Edit"];
+var maruActive = "All";
+function renderMaruFilters() {
+  document.getElementById("maru-filter-bar").innerHTML = maruCats.map(function(c) {
+    return '<button class="filter-btn' + (c===maruActive?" active":"") + '" onclick="setMaruFilter(\'' + c + '\')">' + c + '</button>';
+  }).join("");
+}
+function setMaruFilter(c) { maruActive=c; renderMaruFilters(); renderMaruWorks(); }
+function renderMaruWorks() {
+  var list = maruActive==="All" ? MARU_WORKS : MARU_WORKS.filter(function(w){return w.category===maruActive;});
+  document.getElementById("maru-count").textContent = list.length+" projects";
+  document.getElementById("maru-works-container").innerHTML = buildGrid(list);
+}
+
+/* ── AI Creative ── */
+function renderAIWorks() {
+  document.getElementById("ai-count").textContent = AI_WORKS.length+" projects";
+  var html = "";
+  for (var i=0; i<AI_WORKS.length; i++) {
+    var w = AI_WORKS[i];
+    var thumbSrc = w.vimeo
+      ? "https://vumbnail.com/"+w.vimeo+".jpg"
+      : "https://img.youtube.com/vi/"+ytId(w.youtube)+"/maxresdefault.jpg";
+    html += '<div class="ai-card" style="animation-delay:'+(i*0.08)+'s" onclick="openAIModal(\''+w.id+'\')">'
+      +'<div class="ai-thumb">'
+      +'<img src="'+thumbSrc+'" alt="'+w.title+'" loading="lazy">'
+      +'<div class="ai-overlay"><div class="play-ring"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div>'
+      +'</div>'
+      +'<div class="ai-body">'
+      +'<span class="ai-cat">Directed</span>'
+      +'<div class="ai-title">'+w.title+'</div>'
+      +'<div class="ai-tools">'+w.tools+'</div>'
+      +'</div></div>';
+  }
+  document.getElementById("ai-works-container").innerHTML = html;
+}
+
+/* ── Design ── */
+var designCats = ["All","Directed"];
+var designActive = "All";
+function renderDesignFilters() {
+  document.getElementById("design-filter-bar").innerHTML = designCats.map(function(c) {
+    return '<button class="filter-btn' + (c===designActive?" active":"") + '" onclick="setDesignFilter(\'' + c + '\')">' + c + '</button>';
+  }).join("");
+}
+function setDesignFilter(c) { designActive=c; renderDesignFilters(); renderDesignWorks(); }
+function renderDesignWorks() {
+  var list = designActive==="All" ? DESIGN_WORKS : DESIGN_WORKS.filter(function(w){return w.category===designActive;});
+  document.getElementById("design-count").textContent = list.length+" projects";
+  document.getElementById("design-works-container").innerHTML = buildGrid(list);
+}
+
+/* ── Grid builder ── */
+function buildGrid(list) {
+  if (!list.length) return '<p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--white-dim);padding:40px 0;">No projects in this category.</p>';
+  if (list.length===1) return '<div class="works-grid-small">'+cardHTML(list[0],0,"card-reg")+'</div>';
+  var html = '<div class="editorial-group">'+cardHTML(list[0],0,"card-big");
+  for (var i=1;i<Math.min(3,list.length);i++) html+=cardHTML(list[i],i,"card-small");
+  html+="</div>";
+  if (list.length>3) {
+    html+='<div class="works-grid-small">';
+    for (var j=3;j<list.length;j++) html+=cardHTML(list[j],j,"card-reg");
+    html+="</div>";
+  }
+  return html;
+}
+
+function cardHTML(w,i,sizeClass) {
+  var t = thumb(w);
+  var thumbHtml = t
+    ? '<img src="'+t+'" alt="'+w.title+'" loading="lazy">'
+    : '<div class="card-placeholder">'+w.category+'</div>';
+  return '<div class="work-card '+sizeClass+'" style="animation-delay:'+(i*0.06)+'s" onclick="openModal(\''+w.id+'\')">'
+    +'<div class="card-thumb">'+thumbHtml
+    +'<div class="card-overlay"><div class="play-ring"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div>'
+    +'</div>'
+    +'<div class="card-body">'
+    +'<div class="card-meta"><span class="card-cat">'+w.category+'</span><span class="card-year">'+w.year+'</span></div>'
+    +'<div class="card-title">'+w.title+'</div>'
+    +'<div class="card-desc-preview">'+w.description+'</div>'
+    +'<div class="card-footer"><span class="card-view">View &#8594;</span><span class="card-dot"></span></div>'
+    +'</div></div>';
+}
+
+/* ── Modal helpers ── */
+function fillModalInfo(cat,year,tools,title,desc,link) {
+  document.getElementById("modal-cat").textContent = cat;
+  document.getElementById("modal-year").textContent = year;
+  document.getElementById("modal-tools").textContent = tools ? "&#8212; "+tools : "";
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-desc").textContent = desc;
+  document.getElementById("modal-link").innerHTML = link||"";
+}
+
+/* 이미지/썸네일 모달 — 이미지 원본 비율 그대로 */
+function openModal(id) {
+  var ALL = SH_WORKS.concat(MARU_WORKS).concat(DESIGN_WORKS);
+  var w = null;
+  for (var i=0;i<ALL.length;i++) { if(ALL[i].id===id){w=ALL[i];break;} }
+  if (!w) return;
+  var vid = ytId(w.youtube||"");
+  var t = thumb(w);
+  var link = w.youtube ? '<a href="'+w.youtube+'" target="_blank" rel="noopener" class="modal-yt-link">YouTube에서 보기 &#8594;</a>' : "";
+  fillModalInfo(w.category,w.year,w.tools,w.title,w.description,link);
+  document.getElementById("modal-box").className = "modal-box";
+  var media = document.getElementById("modal-media");
+  media.className = "";
+  media.removeAttribute("style");
+  if (t) {
+    media.innerHTML = '<img src="'+t+'" alt="'+w.title+'">'
+      +(vid ? '<button class="modal-play-btn" onclick="playYT(\''+vid+'\')"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></button>' : "");
+    media.style.position = "relative";
+  } else {
+    media.innerHTML = "";
+  }
+  document.getElementById("modal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+/* AI 모달 — vimeo는 세로, youtube는 가로, 각 비율로 iframe */
+function openAIModal(id) {
+  var w = null;
+  for (var i=0;i<AI_WORKS.length;i++) { if(AI_WORKS[i].id===id){w=AI_WORKS[i];break;} }
+  if (!w) return;
+  var link = w.youtube ? '<a href="'+w.youtube+'" target="_blank" rel="noopener" class="modal-yt-link">YouTube에서 보기 &#8594;</a>' : "";
+  fillModalInfo("Directed",w.year,w.tools,w.title,w.description,link);
+  var box = document.getElementById("modal-box");
+  var media = document.getElementById("modal-media");
+  media.removeAttribute("style");
+  if (w.vimeo) {
+    box.className = "modal-box narrow";
+    media.className = "modal-media is-video";
+    media.style.aspectRatio = "9/16";
+    media.innerHTML = '<iframe src="https://player.vimeo.com/video/'+w.vimeo+'?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+  } else {
+    var vid = ytId(w.youtube||"");
+    box.className = "modal-box";
+    media.className = "";
+    media.style.position = "relative";
+    var thumbSrc = vid ? "https://img.youtube.com/vi/"+vid+"/maxresdefault.jpg" : "";
+    media.innerHTML = '<img src="'+thumbSrc+'" alt="'+w.title+'">'
+      +(vid ? '<button class="modal-play-btn" onclick="playYT(\''+vid+'\')"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></button>' : "");
+  }
+  document.getElementById("modal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function playYT(id) {
+  var media = document.getElementById("modal-media");
+  media.className = "modal-media is-video";
+  media.style.aspectRatio = "16/9";
+  media.innerHTML = '<iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("open");
+  document.getElementById("modal-media").innerHTML = "";
+  document.body.style.overflow = "";
+}
+
+document.getElementById("modal").addEventListener("click", function(e) {
+  if (e.target===document.getElementById("modal")) closeModal();
+});
+document.addEventListener("keydown", function(e) {
+  if (e.key==="Escape") closeModal();
+});
+
+/* ── Cursor ── */
+var glow = document.getElementById("cursor-glow");
+document.addEventListener("mousemove", function(e) {
+  glow.style.left = e.clientX+"px";
+  glow.style.top = e.clientY+"px";
+});
+document.addEventListener("mouseleave", function(){glow.style.opacity="0";});
+document.addEventListener("mouseenter", function(){glow.style.opacity="1";});
+
+document.addEventListener("click", function(e) {
+  for (var i=0; i<16; i++) {
+    (function(idx) {
+      var p = document.createElement("div");
+      p.className = "particle";
+      var angle = (idx/16)*360 + Math.random()*20;
+      var dist = 50 + Math.random()*70;
+      p.style.left = e.clientX+"px";
+      p.style.top = e.clientY+"px";
+      p.style.setProperty("--dx", (Math.cos(angle*Math.PI/180)*dist)+"px");
+      p.style.setProperty("--dy", (Math.sin(angle*Math.PI/180)*dist)+"px");
+      var s = (2+Math.random()*3)+"px";
+      p.style.width = s; p.style.height = s;
+      document.body.appendChild(p);
+      setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},600);
+    })(i);
+  }
+});
+
+renderSHFilters(); renderSHWorks();
+renderMaruFilters(); renderMaruWorks();
+renderAIWorks();
+renderDesignFilters(); renderDesignWorks();
+</script>
+</body>
+</html>
